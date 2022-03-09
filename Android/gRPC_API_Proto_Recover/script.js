@@ -174,7 +174,7 @@ class KotlinProtoRecover {
         })
     }
     
-    ProtoRecoveService(packageName) {
+    ProtoRecoverService(packageName) {
         const methods = this.javaIntrospector.Fields(packageName)
         // const klass_f = Java.use('io.grpc.f').$new()
         // const klass_e = Java.use('io.grpc.e').$new()
@@ -186,21 +186,19 @@ class KotlinProtoRecover {
         })
     }
 
-    ProtoRecoveClass(klassName) {
+    ProtoRecoverClass(klassName) {
         // prints(`Start Recover`)
         const klass = Java.use(klassName)
-
-        const klassObj = this.javaIntrospector.ClassObject(klassName)
-        const fields = this.javaIntrospector.Fields(klassName)
-        const methods = this.javaIntrospector.Methods(klassName, true)
-        
-        // prints(`Init values`)
 
         let obj = {
             name: klassName,
             messages: [],
             fields: []
         }
+
+        const klassObj = this.javaIntrospector.ClassObject(klassName)
+            const fields = this.javaIntrospector.Fields(klassName)
+            const methods = this.javaIntrospector.Methods(klassName, true)
 
         fields.filter(function(item) {
             return item.includes('_FIELD_NUMBER')
@@ -225,7 +223,7 @@ class KotlinProtoRecover {
 }
 
 rpc.exports = {
-    test: function(classes) {
+    apirecover: function(classes) {
         let ret = undefined
         prints("[+] Kotlin plugin started")
         Java.perform(function() {
@@ -240,13 +238,13 @@ rpc.exports = {
                     
                     classes.forEach(function(className) {
                         // prints(`${className}`)
-                        const msg = recover.ProtoRecoveClass(className)
+                        const msg = recover.ProtoRecoverClass(className)
                         messages.push(msg)
                     })
                     
 
-                    // recover.ProtoRecoveService('my.example.app.k')
-                    // recover.ProtoRecoveService('my.example.app.k$a')
+                    // recover.ProtoRecoverService('my.example.app.k')
+                    // recover.ProtoRecoverService('my.example.app.k$a')
 
                     prints('END...')
                     // recover.ProtoRecove(ClassName)

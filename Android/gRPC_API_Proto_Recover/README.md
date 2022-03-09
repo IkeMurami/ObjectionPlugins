@@ -1,3 +1,15 @@
+# Usage
+You should prepare the list classes what extend `com.google.protobuf.GeneratedMessageLite` (see: https://github.com/IkeMurami/PyAndroidBinarySAST)
+
+```
+$ cat /full/path/to/classes.list
+...
+com.google.api.AuthProvider
+...
+$ objection --gadget "com.example.your.app" explore -P "/full/path/to/ObjectionPlugins/Android"
+com.example.your.app on (google: 8.1.0) [usb] # plugin grpc-api recover -c /full/path/to/classes.list -o /full/path/to/out/directory
+```
+
 # О gRPC API полях и Smali
 Поккак восстанавливал API вручную, сделал такие замечания (в другом бинаре могут быть другие названия классов и переменных, но характер будет тот же):
 
