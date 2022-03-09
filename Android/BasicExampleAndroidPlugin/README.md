@@ -1,3 +1,3 @@
 # A plugin example for Objection for Android Application (Kotlin)
 
-objection --gadget "my.example.app" explore -P "/full/path/to/directory" -s "plugin android customAction"
+objection --gadget "my.example.app" explore -P "/full/path/to/directory" -s "plugin androidExample customAction [-t 123]"

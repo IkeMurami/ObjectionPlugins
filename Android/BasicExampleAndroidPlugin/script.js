@@ -54,7 +54,7 @@ class JavaIntrospector {
 
 
 rpc.exports = {
-    frida_function: (someInputs) => {
+    fridafunction: (someInputs) => {
         let ret = undefined
         prints("[+] Plugin started")
         if (Java.available) {
