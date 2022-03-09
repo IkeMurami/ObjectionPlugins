@@ -13,13 +13,6 @@ objection --gadget $1 explore -P "/full/path/to/ObjectionPlugins/Android/" -s "p
 
 1. Если мы подгружаем два плагина в одном namespace, то будут работать только команды из последнего подгруженного плагина
 
-А может дело в том, что два плагина в одном namespace?
-
-Тесты провести:
-
-- два плагина с одинаковым namespace (можно ли так в принципе вести разработку)
-- области видимости между Python и TS разных плагинов
-
 2. RPC-функции не должны содержать в своем имени спец. символы и большие буквы. Например:
 
 Вот так функция не подтянется:
@@ -61,18 +54,30 @@ helpfile хранятся здесь: `objection/console/helpfiles`
 ```python
 from objection.utils.plugin import Plugin
 
-class KotlinPlugin2(Plugin):
-    # ...
+class YourPlugin(Plugin):
+    """ Your Plugin """
 
-    def frida_hook(self, args: list):
+    # ....
+    
+    def my_command_handler(self, args: list):
         from objection.console.commands import COMMANDS
-        PLUGIN_NAME, COMMAND_NAME = 'PLUGIN', 'COMMAND'
 
-        all_loaded_plugins = COMMANDS['plugin']['commands']
-        commands = all_plugins[PLUGIN_NAME]['commands']
-        command_hendler = commands[COMMAND_NAME]['exec']
+        OTHER_PLUGIN_NAME, OTHER_PLUGIN_COMMAND = 'someplugin', 'somecmd'
         EMPTY_ARGS = []
-        print('COMMANDS:', command_hendler(EMPTY_ARGS))
+        
+        # Get all loaded plugins (and your plugins too)
+        all_loaded_plugins = COMMANDS['plugin']['commands']
+        # Get OTHER_PLUGIN_NAME's commands
+        loaded_plugin_commands = all_loaded_plugins[OTHER_PLUGIN_NAME]['commands']
+        # Get the python handler for OTHER_PLUGIN_COMMAND-command
+        command_handler = loaded_plugin_commands[OTHER_PLUGIN_COMMAND]['exec']
+
+        # Call this handler
+        print('Result:', command_handler(EMPTY_ARGS))
+
+
+namespace = 'androidPl2'
+plugin = YourPlugin
 ```
 
 => можем делать библиотеки на основе плагинов без коммита в основной репозиторий Objection.
